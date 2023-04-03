@@ -17,7 +17,7 @@ Its goal is to become the [AUTOMATIC1111/stable-diffusion-webui](https://github.
 * Chat mode for conversation and role playing
 * Nice HTML output for GPT-4chan
 * Markdown output for [GALACTICA](https://github.com/paperswithcode/galai), including LaTeX rendering
-* Custom chat characters in JSON format ([FAQ](https://github.com/oobabooga/text-generation-webui/wiki/Pygmalion-chat-model-FAQ))
+* [Custom chat characters](https://github.com/oobabooga/text-generation-webui/wiki/Custom-chat-characters)
 * Advanced chat features (send images, get audio responses with TTS)
 * Very efficient text streaming
 * Parameter presets
@@ -60,9 +60,9 @@ Source codes: https://github.com/oobabooga/one-click-installers
 
 Recommended if you have some experience with the command-line.
 
-On Windows, I additionally recommend carrying out the installation on WSL instead of the base system: [WSL installation guide](https://github.com/oobabooga/text-generation-webui/wiki/Windows-Subsystem-for-Linux-(Ubuntu)-Installation-Guide).
+On Windows, I additionally recommend carrying out the installation on WSL instead of the base system: [WSL installation guide](https://github.com/oobabooga/text-generation-webui/wiki/WSL-installation-guide).
 
-#### 0. Install Conda
+0. Install Conda
 
 https://docs.conda.io/en/latest/miniconda.html
 
@@ -75,14 +75,14 @@ bash Miniconda3.sh
 
 Source: https://educe-ubc.github.io/conda.html
 
-#### 1. Create a new conda environment
+1. Create a new conda environment
 
 ```
 conda create -n textgen python=3.10.9
 conda activate textgen
 ```
 
-#### 2. Install Pytorch
+2. Install Pytorch
 
 | System | GPU | Command |
 |--------|---------|---------|
@@ -95,7 +95,7 @@ The up to date commands can be found here: https://pytorch.org/get-started/local
 MacOS users, refer to the comments here: https://github.com/oobabooga/text-generation-webui/pull/393
 
 
-#### 3. Install the web UI
+3. Install the web UI
 
 ```
 git clone https://github.com/oobabooga/text-generation-webui
@@ -120,15 +120,12 @@ https://github.com/oobabooga/text-generation-webui/issues/174, https://github.co
 
 Models should be placed inside the `models` folder.
 
-[Hugging Face](https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads) is the main place to download models. These are some noteworthy examples:
+[Hugging Face](https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads) is the main place to download models. These are some examples:
 
-* [Pythia](https://huggingface.co/models?search=eleutherai/pythia)
+* [Pythia](https://huggingface.co/models?sort=downloads&search=eleutherai%2Fpythia+deduped)
 * [OPT](https://huggingface.co/models?search=facebook/opt)
 * [GALACTICA](https://huggingface.co/models?search=facebook/galactica)
 * [GPT-J 6B](https://huggingface.co/EleutherAI/gpt-j-6B/tree/main)
-* [GPT-Neo](https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads&search=eleutherai+%2F+gpt-neo)
-* [\*-Erebus](https://huggingface.co/models?search=erebus) (NSFW)
-* [Pygmalion](https://huggingface.co/models?search=pygmalion) (NSFW)
 
 You can automatically download a model from HF using the script `download-model.py`:
 
