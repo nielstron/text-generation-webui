@@ -13,19 +13,13 @@ params = {
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/api/v1/models":
+        if self.path == "/api/v1/model":
             self.send_response(200)
             self.end_headers()
-            response = json.dumps(
-                {
-                    "data": [
-                        {
-                            "id": shared.model_name,
-                        }
-                    ],
-                    "object": "list",
-                }
-            )
+            response = json.dumps({
+                'result': shared.model_name
+            })
+
 
             self.wfile.write(response.encode("utf-8"))
         else:
@@ -46,18 +40,14 @@ class Handler(BaseHTTPRequestHandler):
             messages = body["messages"]
             begin_signal = body.get("begin_signal", "### ")
             end_signal = body.get("end_signal", "\n")
-            roles_map = body.get(
-                "roles_map", {"user": "Human", "assistant": "Assistant"}
-            )
+            context = body.get("system", None)
             prompt_lines = []
-            if messages[0]["role"] == "system":
+            if context:
                 # the context prompt
-                system_message = messages[0]
-                prompt_lines.append(f"{system_message['content']}\n\n")
-                messages = messages[1:]
+                prompt_lines.append(f"{context}\n\n")
             for message in messages:
                 # remap roles
-                username = roles_map(message["role"])
+                username = message["role"]
                 sent = message["content"]
                 input = f"{begin_signal}{username}: {sent}{end_signal}"
                 prompt_lines.append(input)
@@ -107,10 +97,9 @@ class Handler(BaseHTTPRequestHandler):
             response = json.dumps(
                 {
                     "choices": [
-                        {"index": i, "message": {"role": "assistant", "content": x}}
+                        {"index": i, "message": x}
                         for i, x in enumerate(choices)
                     ],
-                    # TODO
                     "usage": {
                         "prompt_tokens": 0,
                         "completion_tokens": 0,
