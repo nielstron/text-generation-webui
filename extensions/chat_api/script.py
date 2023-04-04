@@ -80,7 +80,7 @@ class Handler(BaseHTTPRequestHandler):
                     length_penalty=float(body.get("length_penalty", 1)),
                     early_stopping=bool(body.get("early_stopping", True)),
                     seed=int(body.get("seed", -1)),
-                    stopping_strings=body.get("stop", ["###"]),
+                    stopping_strings=body.get("stop", [begin_signal]),
                 )
                 answer = ""
                 # the generator streams the result, but we are not interested in a stream
