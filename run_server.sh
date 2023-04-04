@@ -1,0 +1,1 @@
+python3 server.py --model opt-350M-chat --no-stream --gpu-memory 10 10 10 10 --extensions chat_api
