@@ -64,7 +64,7 @@ class Handler(BaseHTTPRequestHandler):
             for _ in range(n):
                 generator = generate_reply(
                     question=prompt,
-                    max_new_tokens=int(body.get("max_length", 2048)),
+                    max_new_tokens=int(body.get("max_length", 512)),
                     do_sample=bool(body.get("do_sample", True)),
                     temperature=float(body.get("temperature", 0.5)),
                     top_p=float(body.get("top_p", 1)),
@@ -80,7 +80,7 @@ class Handler(BaseHTTPRequestHandler):
                     length_penalty=float(body.get("length_penalty", 1)),
                     early_stopping=bool(body.get("early_stopping", True)),
                     seed=int(body.get("seed", -1)),
-                    stopping_strings=body.get("stop", []),
+                    stopping_strings=body.get("stop", ["###"]),
                 )
                 answer = ""
                 # the generator streams the result, but we are not interested in a stream
