@@ -33,6 +33,7 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
 
             messages = body["messages"]
+            roles = body.get("roles", ["Human", "Assistant"])
             begin_signal = body.get("begin_signal", "### ")
             end_signal = body.get("end_signal", "\n")
             context = body.get("system", None)
@@ -54,6 +55,7 @@ class Handler(BaseHTTPRequestHandler):
                 and len(encode("\n".join(prompt_lines))) > max_context
             ):
                 prompt_lines.pop(0)
+            prompt_lines.append(f"{begin_signal}{roles[1]} :")
 
             prompt = "".join(prompt_lines)
 
@@ -62,7 +64,7 @@ class Handler(BaseHTTPRequestHandler):
             for _ in range(n):
                 generator = generate_reply(
                     question=prompt,
-                    max_new_tokens=int(body.get("max_length", 100000)),
+                    max_new_tokens=int(body.get("max_length", 2048)),
                     do_sample=bool(body.get("do_sample", True)),
                     temperature=float(body.get("temperature", 0.5)),
                     top_p=float(body.get("top_p", 1)),
@@ -76,7 +78,7 @@ class Handler(BaseHTTPRequestHandler):
                     num_beams=int(body.get("num_beams", 1)),
                     penalty_alpha=float(body.get("penalty_alpha", 0)),
                     length_penalty=float(body.get("length_penalty", 1)),
-                    early_stopping=bool(body.get("early_stopping", False)),
+                    early_stopping=bool(body.get("early_stopping", True)),
                     seed=int(body.get("seed", -1)),
                     stopping_strings=body.get("stop", []),
                 )
@@ -87,7 +89,7 @@ class Handler(BaseHTTPRequestHandler):
                         answer = a
                     else:
                         answer = a[0]
-                choices.append(answer[len(prompt) :])
+                choices.append(answer)
 
             response = json.dumps(
                 {
@@ -119,7 +121,7 @@ def run_server():
             print("You should install flask_cloudflared manually")
     else:
         print(
-            f"Starting KoboldAI compatible api at http://{server_addr[0]}:{server_addr[1]}/api"
+            f"Starting OpenAI-esque api at http://{server_addr[0]}:{server_addr[1]}/api"
         )
     server.serve_forever()
 
